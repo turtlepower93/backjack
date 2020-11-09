@@ -46,10 +46,11 @@ function pullCard(currentHand,currentTotal,who) {
 
 //adds up the value of hand, helper from pullcard
 function updateHandTotal(currentHand,currentTotal,who) {
-    currentTotal = 0;
-    currentHand.forEach( function (ele) {
+    
+    currentHand.forEach(function (ele) {
+    
         let num = ele.slice(1,3);
-        
+        //debugger;
         if((num === 'K')||(num === 'Q')||(num === 'J')) {
             num = 10;
         }
@@ -62,16 +63,20 @@ function updateHandTotal(currentHand,currentTotal,who) {
             }
         }
 
-        num = parseInt(num);
-        currentTotal += num;
+        num = parseInt(num)
+        currentTotal = num;
 
     })
+    
     if(who) {
-        playerTotal = currentTotal;
-    } else {
-        dealerTotal = currentTotal
+        playerTotal += currentTotal;
+    }  
+    if(0 === who) {
+        dealerTotal += currentTotal;
     }
-    console.log(`Total = ` + currentTotal);
+
+    console.log('playerTotal is' + playerTotal);
+    console.log('dealerTotal is' + dealerTotal);
     console.log(currentHand);
 }
 
@@ -83,7 +88,8 @@ function dealHands() {
     while(dealerHand.length <= 1) {
         pullCard(dealerHand,dealerTotal,0);
     }
-    console.log('playerHand: '+playerHand);
+    console.log('player Hand: '+ playerHand);
+    console.log('dealerHand: '+ dealerHand);
 }
 
 function handleHit() {
@@ -93,13 +99,25 @@ function handleHit() {
 
 function handleStay() {
     //Hide Hit and Stay Buttons
-    //whoWon();
     dealerPlays();
+    whoWon();
 }
 
 function whoWon() {
     //if player over 21, bust!
-    //if player has 5 
+    
+    if(playerTotal > dealerTotal) {
+        //display yay you win.
+        console.log('You Win!')
+    } else  {
+        console.log('YOU LOSE');
+    } 
+    
+    if (true){
+        console.log('meh;')
+    }
+
+    
     //if Even === TIE
     //if player under dealer === LOSE
     //if player gets blackjack, check if dealer has blackjack, if not player wins (with Bonus)
@@ -108,6 +126,9 @@ function whoWon() {
 function dealerPlays() {
 
     while(playerTotal > dealerTotal) {
+        if (dealerTotal === 21) {
+            break;
+        }
         pullCard(dealerHand,dealerTotal, 0);
         console.log(dealerHand);
         console.log("dealer hits, new total is:" + dealerTotal)
