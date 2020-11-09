@@ -1,7 +1,8 @@
 // CONSTANTS
 //cards .card.dK = diamond king
 const suits = ['h','d','s','c']
-const ranks = ['01','02','03','04','05','06','07','08','09','10','J','Q','K','A']
+const ranks = ['02','03','04','05','06','07','08','09','10','J','Q','K','A']
+
 
 //STATE VARIABLES
 let playerHand;
@@ -13,7 +14,7 @@ let currentDeck = []; //deck in use. once a card is removed, cant be picked agai
 //CACHED ELEMENTS
 
 const hitBut = document.getElementById("hit");
-const stayBut = document.getElementById("hit")
+const stayBut = document.getElementById("stay")
 
 function say() {
     console.log('how do i not know this yet.')
@@ -22,6 +23,7 @@ function say() {
 //EVENT LISTENERS
 
 hitBut.addEventListener('click', handleHit);
+stayBut.addEventListener('click', handleStay);
 
 //FUNCTIONS
 
@@ -29,42 +31,88 @@ init();
 
 function gameLoop() {
     dealHands();
-
     render();
 }
 
 
-//helperFunction. Call at Deal Hand. and at Hit.
-function pullCard(currentHand) {
-    let randomSeedSuit = Math.floor(Math.random() * 4);
-    let randomSeedRank = Math.floor(Math.random() * 14);
-    let card = '';
-    card = suits[randomSeedSuit] + ranks[randomSeedRank];
+//Pull random card from currentDeck and place it in hand.
+function pullCard(currentHand,currentTotal,who) {
+    let randomDraw = Math.floor(Math.random() * currentDeck.length);
+    let card = currentDeck[randomDraw];
     currentHand.push(card);
-
-
-    //Have to erase card from deck
-    
-
-    return;
+    currentDeck.splice(randomDraw,1);
+    updateHandTotal(currentHand,currentTotal,who);
 }
 
+//adds up the value of hand, helper from pullcard
+function updateHandTotal(currentHand,currentTotal,who) {
+    currentTotal = 0;
+    currentHand.forEach( function (ele) {
+        let num = ele.slice(1,3);
+        
+        if((num === 'K')||(num === 'Q')||(num === 'J')) {
+            num = 10;
+        }
+
+        if(num === 'A') {
+            if(playerTotal < 10) {
+                num = 11;
+            } else {
+                num = 1;
+            }
+        }
+
+        num = parseInt(num);
+        currentTotal += num;
+
+    })
+    if(who) {
+        playerTotal = currentTotal;
+    } else {
+        dealerTotal = currentTotal
+    }
+    console.log(`Total = ` + currentTotal);
+    console.log(currentHand);
+}
+
+//Deal beginning hands
 function dealHands() {
     while(playerHand.length <= 1) {
-        pullCard(playerHand);
+        pullCard(playerHand,playerTotal,1);
     }
     while(dealerHand.length <= 1) {
-        pullCard(dealerHand);
+        pullCard(dealerHand,dealerTotal,0);
     }
-    console.log(playerHand);
+    console.log('playerHand: '+playerHand);
 }
 
 function handleHit() {
-  pullCard(playerHand);
+  pullCard(playerHand,playerTotal, 1);
+  //update graphics
+}
+
+function handleStay() {
+    //Hide Hit and Stay Buttons
+    //whoWon();
+    dealerPlays();
+}
+
+function whoWon() {
+    //if player over 21, bust!
+    //if player has 5 
+    //if Even === TIE
+    //if player under dealer === LOSE
+    //if player gets blackjack, check if dealer has blackjack, if not player wins (with Bonus)
 }
 
 function dealerPlays() {
 
+    while(playerTotal > dealerTotal) {
+        pullCard(dealerHand,dealerTotal, 0);
+        console.log(dealerHand);
+        console.log("dealer hits, new total is:" + dealerTotal)
+    }
+    console.log(dealerTotal)
 }
 
 
@@ -72,20 +120,18 @@ function render() {
 
 }
 
+//Creates new deck at beginning of game
 function refreshDeck() {
     let suitIdx = 0;
     let rankIdx = 0;
-    while(currentDeck.length < 52) {
-        currentDeck.push(`${suits[suitIdx]}${ranks[rankIdx]}`)
+
+    while (suitIdx<4) {
+        rankIdx = 0;
+        while(rankIdx<13) {
+            currentDeck.push(`${suits[suitIdx]}${ranks[rankIdx]}`);
+            rankIdx += 1;
+        }
         suitIdx += 1;
-        rankIdx += 1;
-        console.log(suitIdx)
-        if (suitIdx === 3) {
-            suitIdx = 0;
-        }
-        if (rankIdx === 14) {
-            rankIdx = 0;
-        }
     }
 }
 
