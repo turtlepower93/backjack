@@ -20,31 +20,34 @@ let currentDeck; //deck in use. once a card is removed, cant be picked again.
 
 init();
 
+function gameLoop() {
+    dealHands();
+    playerPlays();
+    dealerPlays();
+    render();
+}
+
+
+//helperFunction. Call at Deal Hand. and at Hit.
 function pullCard(currentHand) {
     let randomSeedSuit = Math.floor(Math.random() * 4);
     let randomSeedRank = Math.floor(Math.random() * 14);
-    console.log(currentHand);
-    console.log(randomSeedRank);
-    console.log(randomSeedSuit)
     let card = '';
     card = suits[randomSeedSuit] + ranks[randomSeedRank];
     currentHand.push(card);
-    return
+    return;
 }
 
 function dealHands() {
     while(playerHand.length <= 1) {
         pullCard(playerHand);
-        console.log(playerHand);
     }
     while(dealerHand.length <= 1) {
         pullCard(dealerHand);
     }
-
+    console.log(playerHand);
 }
 
-
-render();
 
 function render() {
 
@@ -56,7 +59,7 @@ function init() {
     dealerHand = [];
     dealerTotal = null;
     currentDeck = [];
-
+    gameLoop();
 }
 
 
