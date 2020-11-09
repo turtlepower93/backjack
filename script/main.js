@@ -20,9 +20,44 @@ let currentDeck; //deck in use. once a card is removed, cant be picked again.
 
 init();
 
+function pullCard(currentHand) {
+    let randomSeedSuit = Math.floor(Math.random() * 4);
+    let randomSeedRank = Math.floor(Math.random() * 14);
+    console.log(currentHand);
+    console.log(randomSeedRank);
+    console.log(randomSeedSuit)
+    let card = '';
+    card = suits[randomSeedSuit] + ranks[randomSeedRank];
+    currentHand.push(card);
+    return
+}
+
+function dealHands() {
+    while(playerHand.length <= 1) {
+        pullCard(playerHand);
+        console.log(playerHand);
+    }
+    while(dealerHand.length <= 1) {
+        pullCard(dealerHand);
+    }
+
+}
+
+
 render();
 
+function render() {
 
+}
+
+function init() {
+    playerHand = [];
+    playerTotal = null;
+    dealerHand = [];
+    dealerTotal = null;
+    currentDeck = [];
+
+}
 
 
 
