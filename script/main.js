@@ -1,22 +1,70 @@
-// let playerTotal;
-// let dealerTotal;
+// CONSTANTS
+//cards .card.dK = diamond king
+const suits = ['h','d','s','c']
+const ranks = [1,2,3,4,5,6,7,8,9,10,'J','Q','K','A']
 
-console.log('hi')
+//STATE VARIABLES
+let playerHand;
+let playerTotal;
+let dealerHand;
+let dealerTotal;
+let currentDeck; //deck in use. once a card is removed, cant be picked again.
+
+//CACHED ELEMENTS
 
 
-function BlackJackInOneFunction() {
-    let userTotal = 0;
-    while(userTotal < 21) {
-        console.log('You are at' + userTotal + " Hit?");
-        var answer = prompt('y/n');
-        if(answer === 'y') {
-            userTotal += Math.floor(Math.random()*11);
-        } else {
-           return console.log('compare current number with dealer.');
-        }
+//EVENT LISTENERS
+
+
+//FUNCTIONS
+
+init();
+
+render();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// function BlackJackInOneFunction() {
+//     let userTotal = 0;
+//     while(userTotal < 21) {
+//         console.log('You are at' + userTotal + " Hit?");
+//         var answer = prompt('y/n');
+//         if(answer === 'y') {
+//             userTotal += Math.floor(Math.random()*11);
+//         } else {
+//            return console.log('compare current number with dealer.');
+//         }
         
-    }
-}
+//     }
+// }
 
 
 // function compareWithDealer() {
@@ -36,12 +84,7 @@ function BlackJackInOneFunction() {
 // }
 
 
-//Notes:
-//Dealer AI is more complicated than i thought. couple of cases:
-//Dealer total isnt just a random number.
-//the dealer plays just like the user... HOW DO I MODEL THIS?!
-//basics, the dealer only has to beat the player.
-//IF the dealer's total is greater than the user, then he wins.
+
 
 
 //HOW TO WIN
