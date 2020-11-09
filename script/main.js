@@ -1,20 +1,27 @@
 // CONSTANTS
 //cards .card.dK = diamond king
 const suits = ['h','d','s','c']
-const ranks = [1,2,3,4,5,6,7,8,9,10,'J','Q','K','A']
+const ranks = ['01','02','03','04','05','06','07','08','09','10','J','Q','K','A']
 
 //STATE VARIABLES
 let playerHand;
 let playerTotal;
 let dealerHand;
 let dealerTotal;
-let currentDeck; //deck in use. once a card is removed, cant be picked again.
+let currentDeck = []; //deck in use. once a card is removed, cant be picked again.
 
 //CACHED ELEMENTS
 
+const hitBut = document.getElementById("hit");
+const stayBut = document.getElementById("hit")
+
+function say() {
+    console.log('how do i not know this yet.')
+}
 
 //EVENT LISTENERS
 
+hitBut.addEventListener('click', handleHit);
 
 //FUNCTIONS
 
@@ -22,8 +29,7 @@ init();
 
 function gameLoop() {
     dealHands();
-    playerPlays();
-    dealerPlays();
+
     render();
 }
 
@@ -35,6 +41,11 @@ function pullCard(currentHand) {
     let card = '';
     card = suits[randomSeedSuit] + ranks[randomSeedRank];
     currentHand.push(card);
+
+
+    //Have to erase card from deck
+    
+
     return;
 }
 
@@ -48,9 +59,34 @@ function dealHands() {
     console.log(playerHand);
 }
 
+function handleHit() {
+  pullCard(playerHand);
+}
+
+function dealerPlays() {
+
+}
+
 
 function render() {
 
+}
+
+function refreshDeck() {
+    let suitIdx = 0;
+    let rankIdx = 0;
+    while(currentDeck.length < 52) {
+        currentDeck.push(`${suits[suitIdx]}${ranks[rankIdx]}`)
+        suitIdx += 1;
+        rankIdx += 1;
+        console.log(suitIdx)
+        if (suitIdx === 3) {
+            suitIdx = 0;
+        }
+        if (rankIdx === 14) {
+            rankIdx = 0;
+        }
+    }
 }
 
 function init() {
@@ -58,7 +94,7 @@ function init() {
     playerTotal = null;
     dealerHand = [];
     dealerTotal = null;
-    currentDeck = [];
+    refreshDeck();
     gameLoop();
 }
 
