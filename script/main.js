@@ -15,11 +15,16 @@ let pot = []; //array of chips
 let wallet = 1000;
 let potTotal = 0;
 
+
 //CACHED ELEMENTS
 
 const hitBut = document.getElementById("hit");
 const stayBut = document.getElementById("stay");
 const chipButs = document.getElementById("chip-container");
+const dealerContainer = document.getElementById('dealer-container');
+const playerContainer = document.getElementById('player-container');
+console.log(dealerContainer);
+
 
 //EVENT LISTENERS
 
@@ -55,6 +60,7 @@ function pullCard(currentHand,currentTotal,who) {
     currentHand.push(card);
     currentDeck.splice(randomDraw,1);
     updateHandTotal(currentHand,currentTotal,who);
+    render();
 }
 
 //adds up the value of hand, helper from pullcard
@@ -129,6 +135,19 @@ function handleStay() {
     whoWon();
 }
 
+function dealerPlays() {
+
+    while(playerTotal >= dealerTotal) {
+        if (dealerTotal === 21) {
+            break;
+        }
+        pullCard(dealerHand,dealerTotal, 0);
+        console.log(dealerHand);
+        console.log("dealer hits, new total is:" + dealerTotal)
+    }
+    console.log(dealerTotal)
+}
+
 function whoWon() {
     //if player over 21, bust!
     if(playerTotal > 21) {
@@ -139,7 +158,6 @@ function whoWon() {
     //dealer bust
     if (dealerTotal > 21) {
         console.log('You win man, he busted');
-        debugger;
         wallet += (potTotal*2);
         pot = [];
     }
@@ -158,20 +176,11 @@ function whoWon() {
         console.log('Push')
         pot = [];
     }
-    //displayNextHand
+    renderNextHandButton() 
 }
 
-function dealerPlays() {
+function renderNextHandButton() {
 
-    while(playerTotal >= dealerTotal) {
-        if (dealerTotal === 21) {
-            break;
-        }
-        pullCard(dealerHand,dealerTotal, 0);
-        console.log(dealerHand);
-        console.log("dealer hits, new total is:" + dealerTotal)
-    }
-    console.log(dealerTotal)
 }
 
 function renderMoveCards() {
@@ -182,8 +191,22 @@ function renderMoveChip() {
 
 }
 
-function render() {
+function renderCards() {
 
+    playerContainer.innerHTML = ` `;
+    playerHand.forEach(function(ele) {
+        playerContainer.insertAdjacentHTML('afterbegin',`<div class="card ${ele}"></div>`);
+    })
+
+    dealerContainer.innerHTML = ` `;
+    dealerHand.forEach(function(ele) {
+        dealerContainer.insertAdjacentHTML('afterbegin',`<div class="card ${ele}"></div>`);
+    })
+        
+}
+
+function render() {
+   renderCards();
 }
 
 //Creates new deck at beginning of game

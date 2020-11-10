@@ -29,3 +29,15 @@ button {
     border-radius: 50%;
     border: 15px dashed black;
 }
+
+#player-container {
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#dealer-container {
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
