@@ -14,3 +14,8 @@ button {
     border-radius: 10px;
     background-color:peachpuff;
 }
+
+#chip-container {
+    display:flex;
+    flex-wrap: wrap;
+}

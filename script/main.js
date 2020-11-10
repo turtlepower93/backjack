@@ -1,7 +1,8 @@
 // CONSTANTS
 //cards .card.dK = diamond king
-const suits = ['h','d','s','c']
-const ranks = ['02','03','04','05','06','07','08','09','10','J','Q','K','A']
+const SUITS = ['h','d','s','c']
+const RANKS = ['02','03','04','05','06','07','08','09','10','J','Q','K','A'];
+const CHIPS = ['1',5,10,20,50,100];
 
 
 //STATE VARIABLES
@@ -10,20 +11,20 @@ let playerTotal;
 let dealerHand;
 let dealerTotal;
 let currentDeck = []; //deck in use. once a card is removed, cant be picked again.
+let pot = []; //array of chips
+let wallet = 1000;
 
 //CACHED ELEMENTS
 
 const hitBut = document.getElementById("hit");
-const stayBut = document.getElementById("stay")
-
-function say() {
-    console.log('how do i not know this yet.')
-}
+const stayBut = document.getElementById("stay");
+const chipButs = document.getElementById("chip-container");
 
 //EVENT LISTENERS
 
 hitBut.addEventListener('click', handleHit);
 stayBut.addEventListener('click', handleStay);
+chipButs.addEventListener('click', handleBet);
 
 //FUNCTIONS
 
@@ -34,6 +35,17 @@ function gameLoop() {
     render();
 }
 
+//Deal beginning hands
+function dealHands() {
+    while(playerHand.length <= 1) {
+        pullCard(playerHand,playerTotal,1);
+    }
+    while(dealerHand.length <= 1) {
+        pullCard(dealerHand,dealerTotal,0);
+    }
+    console.log('player Hand: '+ playerHand);
+    console.log('dealerHand: '+ dealerHand);
+}
 
 //Pull random card from currentDeck and place it in hand.
 function pullCard(currentHand,currentTotal,who) {
@@ -65,13 +77,12 @@ function updateHandTotal(currentHand,currentTotal,who) {
 
         num = parseInt(num)
         currentTotal = num;
-
     })
     
     if(who) {
         playerTotal += currentTotal;
     }  
-    if(0 === who) {
+    if( 0 === who) {
         dealerTotal += currentTotal;
     }
 
@@ -80,22 +91,29 @@ function updateHandTotal(currentHand,currentTotal,who) {
     console.log(currentHand);
 }
 
-//Deal beginning hands
-function dealHands() {
-    while(playerHand.length <= 1) {
-        pullCard(playerHand,playerTotal,1);
-    }
-    while(dealerHand.length <= 1) {
-        pullCard(dealerHand,dealerTotal,0);
-    }
-    console.log('player Hand: '+ playerHand);
-    console.log('dealerHand: '+ dealerHand);
+function handleBet(evt) {
+
+    selectedChip = evt.target.id
+    selectedChip = selectedChip.slice(2,5);
+    selectedChip = parseInt(selectedChip);
+    if(wallet < selectedChip) return console.log('YOUBROKEFOOL');
+    //move chip to pot icebox
+    wallet -= selectedChip;
+    pot.push(selectedChip);
+
 }
 
+
+
 function handleHit() {
-  pullCard(playerHand,playerTotal, 1);
-  //update graphics
+    pullCard(playerHand,playerTotal, 1);
+    if(playerTotal > 21) {
+        whoWon();
+    }
+    //update graphics
 }
+
+
 
 function handleStay() {
     //Hide Hit and Stay Buttons
@@ -105,27 +123,31 @@ function handleStay() {
 
 function whoWon() {
     //if player over 21, bust!
-    
-    if(playerTotal > dealerTotal) {
-        //display yay you win.
-        console.log('You Win!')
-    } else  {
-        console.log('YOU LOSE');
-    } 
-    
-    if (true){
-        console.log('meh;')
+    if(playerTotal > 21) {
+        //LOSS
+        console.log('YOU LOSE')
+    }
+    //dealer bust
+    if (dealerTotal > 21) {
+        console.log('You win man, he busted');
     }
 
-    
-    //if Even === TIE
-    //if player under dealer === LOSE
-    //if player gets blackjack, check if dealer has blackjack, if not player wins (with Bonus)
+    if((dealerTotal < 21 && playerTotal < 21) && playerTotal > dealerTotal) {
+        console.log('You Win!')
+    }
+    if((dealerTotal < 21 && playerTotal < 21) && dealerTotal > playerTotal) {
+        console.log('YOU LOSE');
+    } 
+
+    if(playerTotal === 21 && dealerTotal ===21) {
+        console.log('Its a Tie!')
+    }
+
 }
 
 function dealerPlays() {
 
-    while(playerTotal > dealerTotal) {
+    while(playerTotal >= dealerTotal) {
         if (dealerTotal === 21) {
             break;
         }
@@ -136,6 +158,13 @@ function dealerPlays() {
     console.log(dealerTotal)
 }
 
+function renderMoveCards() {
+
+}
+
+function renderMoveChip() {
+
+}
 
 function render() {
 
@@ -149,7 +178,7 @@ function refreshDeck() {
     while (suitIdx<4) {
         rankIdx = 0;
         while(rankIdx<13) {
-            currentDeck.push(`${suits[suitIdx]}${ranks[rankIdx]}`);
+            currentDeck.push(`${SUITS[suitIdx]}${RANKS[rankIdx]}`);
             rankIdx += 1;
         }
         suitIdx += 1;
@@ -157,6 +186,7 @@ function refreshDeck() {
 }
 
 function init() {
+    pot = [];
     playerHand = [];
     playerTotal = null;
     dealerHand = [];
@@ -166,81 +196,3 @@ function init() {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function BlackJackInOneFunction() {
-//     let userTotal = 0;
-//     while(userTotal < 21) {
-//         console.log('You are at' + userTotal + " Hit?");
-//         var answer = prompt('y/n');
-//         if(answer === 'y') {
-//             userTotal += Math.floor(Math.random()*11);
-//         } else {
-//            return console.log('compare current number with dealer.');
-//         }
-        
-//     }
-// }
-
-
-// function compareWithDealer() {
-//     dealerTotal = Math.getRandomInt(0,23);
-//     if()
-//     if(playerTotal > dealerTotal) {
-//         return console.log('player won!');
-//     } else {
-//         console.log('compooter won')
-//     }
-// }
-
-// function init() {
-//     playerTotal = 0;
-//     dealerTotal = 0;
-//     compareWithDealer();
-// }
-
-
-
-
-
-//HOW TO WIN
-//IF player is over 21 then LOSE
-//IF player1 total > player2 total then player1 wins;
-
-//cool thing is, ai logic follows player logic.
-//Firstly, if you are below 21 and you are above the playerTotal, then you win, dont hit.
-//you will always hit if you are below the currentTableTotal (playerTotal bc im)
-
-
-
-
-
-
-
-//ICEBOX:
-//
