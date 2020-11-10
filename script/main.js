@@ -21,6 +21,7 @@ let potTotal = 0;
 const hitBut = document.getElementById("hit");
 const stayBut = document.getElementById("stay");
 const chipButs = document.getElementById("chip-container");
+const dealBut = document.getElementById('deal');
 const dealerContainer = document.getElementById('dealer-container');
 const playerContainer = document.getElementById('player-container');
 console.log(dealerContainer);
@@ -31,6 +32,7 @@ console.log(dealerContainer);
 hitBut.addEventListener('click', handleHit);
 stayBut.addEventListener('click', handleStay);
 chipButs.addEventListener('click', handleBet);
+dealBut.addEventListener('click', init);
 
 //FUNCTIONS
 
@@ -176,11 +178,13 @@ function whoWon() {
         console.log('Push')
         pot = [];
     }
-    renderNextHandButton() 
+    renderDealHandButton(1) 
 }
 
-function renderNextHandButton() {
-
+function renderDealHandButton(state) {
+    // if(state === 0) {
+    //     document.
+    // }
 }
 
 function renderMoveCards() {
@@ -195,12 +199,12 @@ function renderCards() {
 
     playerContainer.innerHTML = ` `;
     playerHand.forEach(function(ele) {
-        playerContainer.insertAdjacentHTML('afterbegin',`<div class="card ${ele}"></div>`);
+        playerContainer.insertAdjacentHTML('afterbegin',`<div class="card ${ele}" align-content="flex-end"></div>`);
     })
 
     dealerContainer.innerHTML = ` `;
     dealerHand.forEach(function(ele) {
-        dealerContainer.insertAdjacentHTML('afterbegin',`<div class="card ${ele}"></div>`);
+        dealerContainer.insertAdjacentHTML('afterbegin',`<div class="card ${ele}" align-content="flex-end"></div>`);
     })
         
 }
@@ -225,11 +229,14 @@ function refreshDeck() {
 }
 
 function init() {
+    debugger
     pot = [];
+    potTotal = 0;
     playerHand = [];
     playerTotal = null;
     dealerHand = [];
     dealerTotal = null;
+    renderDealHandButton(0);
     refreshDeck();
     gameLoop();
 }

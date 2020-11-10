@@ -7,23 +7,25 @@
 body {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 25vh 5vh 10vh 5vh 25vh 15vh;
+    grid-template-rows: 25vh 5vh 10vh 5vh 25vh 20vh 10vh;
     margin: 0;
     justify-items:center;
-
 }
 
 button {
     font-size: 50px;
     border-radius: 10px;
     background-color:peachpuff;
-    
+}
+
+#deal {
+    grid-row: 7;
+    grid-column: 3;
+
 }
 
 .card{
-    font-size: 26px;
-    align-items: center;
-
+    font-size:4vmin;
 }
 
 #dealer-container {
