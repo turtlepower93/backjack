@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+    background-color: rgb(112, 199, 72);
 }
 
 body {
@@ -8,6 +9,7 @@ body {
 
 button {
     display:flex;
+    flex-wrap: wrap;
     font-size: 50px;
     text-align:center;
     margin:100px auto;
@@ -18,4 +20,12 @@ button {
 #chip-container {
     display:flex;
     flex-wrap: wrap;
+    justify-content: center;
+}
+
+.chips {
+    padding:50px;
+    background-color:rgb(232, 129, 88);
+    border-radius: 50%;
+    border: 15px dashed black;
 }

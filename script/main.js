@@ -13,6 +13,7 @@ let dealerTotal;
 let currentDeck = []; //deck in use. once a card is removed, cant be picked again.
 let pot = []; //array of chips
 let wallet = 1000;
+let potTotal = 0;
 
 //CACHED ELEMENTS
 
@@ -100,7 +101,13 @@ function handleBet(evt) {
     //move chip to pot icebox
     wallet -= selectedChip;
     pot.push(selectedChip);
+    countPot();
 
+}
+
+function countPot() {
+    potTotal = pot.reduce((acc,ele) => acc + ele)
+    console.log(potTotal);
 }
 
 
@@ -110,6 +117,7 @@ function handleHit() {
     if(playerTotal > 21) {
         whoWon();
     }
+    //disable betting.
     //update graphics
 }
 
@@ -126,23 +134,31 @@ function whoWon() {
     if(playerTotal > 21) {
         //LOSS
         console.log('YOU LOSE')
+        pot = [];
     }
     //dealer bust
     if (dealerTotal > 21) {
         console.log('You win man, he busted');
+        debugger;
+        wallet += (potTotal*2);
+        pot = [];
     }
 
     if((dealerTotal < 21 && playerTotal < 21) && playerTotal > dealerTotal) {
         console.log('You Win!')
+        wallet += potTotal;
+        pot = [];
     }
     if((dealerTotal < 21 && playerTotal < 21) && dealerTotal > playerTotal) {
         console.log('YOU LOSE');
+        pot = [];
     } 
 
     if(playerTotal === 21 && dealerTotal ===21) {
-        console.log('Its a Tie!')
+        console.log('Push')
+        pot = [];
     }
-
+    //displayNextHand
 }
 
 function dealerPlays() {
