@@ -2,7 +2,7 @@
 //cards .card.dK = diamond king
 const SUITS = ['h','d','s','c']
 const RANKS = ['02','03','04','05','06','07','08','09','10','J','Q','K','A'];
-const CHIPS = ['1',5,10,20,50,100];
+const CHIPS = [1,5,10,20,50,100];
 
 
 //STATE VARIABLES
@@ -124,7 +124,7 @@ function handleHit() {
         whoWon();
     }
     //disable betting.
-    //update graphics
+
 }
 
 
