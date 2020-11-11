@@ -24,7 +24,10 @@ const chipButs = document.getElementById("chip-container");
 const dealBut = document.getElementById('deal');
 const dealerContainer = document.getElementById('dealer-container');
 const playerContainer = document.getElementById('player-container');
-console.log(dealerContainer);
+const dealerTotalEl = document.getElementById('dealer-total');
+const playerTotalEl = document.getElementById('player-total');
+const playerWalletEl = document.getElementById('current-wallet');
+const potTotalEl = document.getElementById('pot-total')
 
 
 //EVENT LISTENERS
@@ -110,6 +113,7 @@ function handleBet(evt) {
     wallet -= selectedChip;
     pot.push(selectedChip);
     countPot();
+    render();
 
 }
 
@@ -174,6 +178,7 @@ function whoWon() {
         console.log('Push')
     }
     renderDealHandButton(1) 
+    render();
 }
 
 function renderDealHandButton(state) {
@@ -183,6 +188,13 @@ function renderDealHandButton(state) {
     if(state === 1) {
         dealBut.style.display = "block"
     }
+}
+
+function renderValue() {
+    dealerTotalEl.innerHTML = `<div id="dealer-total">$${dealerTotal}</div>`;
+    playerTotalEl.innerHTML = `<div id="player-total">$${playerTotal}</div>`;
+    potTotalEl.innerHTML = `<div id="player-total">$${potTotal}</div>`;
+    
 }
 
 function renderMoveCards() {
@@ -209,6 +221,7 @@ function renderCards() {
 
 function render() {
    renderCards();
+   renderValue();
 }
 
 //Creates new deck at beginning of game
