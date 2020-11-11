@@ -129,22 +129,21 @@ function handleHit() {
     if(playerTotal > 21) {
         whoWon();
     }
-    //disable betting.
+    renderDisableBetting(0);
 
 }
-
-
 
 function handleStay() {
     //Hide Hit and Stay Buttons
     dealerPlays();
     whoWon();
+    renderDisableBetting(0);
 }
 
 function dealerPlays() {
 
     while(playerTotal >= dealerTotal) {
-        if (dealerTotal === 21) {
+        if (dealerTotal >= 17) {
             break;
         }
         pullCard(dealerHand,dealerTotal, 0);
@@ -157,21 +156,16 @@ function dealerPlays() {
 function whoWon() {
     //if player over 21, bust!
     if(playerTotal > 21) {
-        //LOSS
-        console.log('YOU LOSE')
     }
     //dealer bust
     if (dealerTotal > 21) {
-        console.log('You win man, he busted');
         wallet += (potTotal*2);
     }
 
     if((dealerTotal < 21 && playerTotal < 21) && playerTotal > dealerTotal) {
-        console.log('You Win!')
         wallet += (potTotal*2);
     }
     if((dealerTotal < 21 && playerTotal < 21) && dealerTotal > playerTotal) {
-        console.log('YOU LOSE');
     } 
 
     if(playerTotal === 21 && dealerTotal ===21) {
@@ -184,17 +178,30 @@ function whoWon() {
 function renderDealHandButton(state) {
     if(state === 0) {
         dealBut.style.display = 'none'
+        hitBut.style.display = "block"
+        stayBut.style.display = "block"
     }
     if(state === 1) {
         dealBut.style.display = "block"
+        hitBut.style.display = "none"
+        stayBut.style.display = "none"
     }
 }
 
 function renderValue() {
-    dealerTotalEl.innerHTML = `<div id="dealer-total">$${dealerTotal}</div>`;
-    playerTotalEl.innerHTML = `<div id="player-total">$${playerTotal}</div>`;
+    dealerTotalEl.innerHTML = `<div id="dealer-total">${dealerTotal}</div>`;
+    playerTotalEl.innerHTML = `<div id="player-total">${playerTotal}</div>`;
     potTotalEl.innerHTML = `<div id="player-total">$${potTotal}</div>`;
-    
+    playerWalletEl.innerHTML = `<div id="player-total">Wallet : $${wallet}</div>`;
+}
+
+function renderDisableBetting(state){
+    if(state === 1) {
+        chipButs.style.pointerEvents = 'all';
+    } else if (state === 0) {
+        chipButs.style.pointerEvents = 'none' ;
+
+    }
 }
 
 function renderMoveCards() {
@@ -247,6 +254,7 @@ function init() {
     dealerHand = [];
     dealerTotal = null;
     renderDealHandButton(0);
+    renderDisableBetting(1)
     refreshDeck();
     gameLoop();
 }

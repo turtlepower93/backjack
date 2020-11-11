@@ -16,7 +16,19 @@ button {
     font-size: 4vmin;
     padding: .1vmin 2vmin;
     border-radius: 10px;
-    background-color:peachpuff;
+    color:white;
+    background-color:rgba(21, 15, 10, 0.541);
+    transform: scale(1);
+}
+
+button:hover {
+    transition: all .8s;
+    transform: scale(.8);
+}
+
+.chips:hover {
+    transition: all .8s;
+    transform: scale(.8);
 }
 
 #deal {
@@ -26,17 +38,16 @@ button {
 
 .card{
     font-size:4vmin;
+    pointer-events: ;
 }
 
 #current-wallet {
     grid-row: 7;
     grid-template-columns: 1;
     align-self: center;
-    color:white;
-    background: black;
-    padding:20px;
+    padding:10px;
     border-radius: 10px;
-
+    font-size: 4vmin;
 }
 
 #dealer-container {
@@ -52,6 +63,7 @@ button {
     grid-row: 3;
     grid-column: 1;
     justify-self: end;
+    font-size: 2fr;
     
 }
 
@@ -61,6 +73,19 @@ button {
     align-self: center;
     justify-items:center;
     text-align: center;
+}
+
+h1 {
+    grid-row: 1;
+    grid-column: 1;
+    align-self: center;
+    font-size: 4vmin;
+    padding: 5px;
+    background-color: rgba(21, 15, 10, 0.541);
+    border: 1px solid white;
+    color: white;
+    border-radius: 10px;
+    letter-spacing: 1px;
 }
 
 #stay {
