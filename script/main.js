@@ -71,7 +71,7 @@ function updateHandTotal(currentHand,currentTotal,who) {
     currentHand.forEach(function (ele) {
     
         let num = ele.slice(1,3);
-        //debugger;
+        
         if((num === 'K')||(num === 'Q')||(num === 'J')) {
             num = 10;
         }
@@ -155,36 +155,34 @@ function whoWon() {
     if(playerTotal > 21) {
         //LOSS
         console.log('YOU LOSE')
-        pot = [];
     }
     //dealer bust
     if (dealerTotal > 21) {
         console.log('You win man, he busted');
         wallet += (potTotal*2);
-        pot = [];
     }
 
     if((dealerTotal < 21 && playerTotal < 21) && playerTotal > dealerTotal) {
         console.log('You Win!')
-        wallet += potTotal;
-        pot = [];
+        wallet += (potTotal*2);
     }
     if((dealerTotal < 21 && playerTotal < 21) && dealerTotal > playerTotal) {
         console.log('YOU LOSE');
-        pot = [];
     } 
 
     if(playerTotal === 21 && dealerTotal ===21) {
         console.log('Push')
-        pot = [];
     }
     renderDealHandButton(1) 
 }
 
 function renderDealHandButton(state) {
-    // if(state === 0) {
-    //     document.
-    // }
+    if(state === 0) {
+        dealBut.style.display = 'none'
+    }
+    if(state === 1) {
+        dealBut.style.display = "block"
+    }
 }
 
 function renderMoveCards() {
@@ -229,7 +227,6 @@ function refreshDeck() {
 }
 
 function init() {
-    debugger
     pot = [];
     potTotal = 0;
     playerHand = [];

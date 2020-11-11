@@ -13,7 +13,8 @@ body {
 }
 
 button {
-    font-size: 50px;
+    font-size: 4vmin;
+    padding: .1vmin 2vmin;
     border-radius: 10px;
     background-color:peachpuff;
 }
@@ -21,11 +22,21 @@ button {
 #deal {
     grid-row: 7;
     grid-column: 3;
-
 }
 
 .card{
     font-size:4vmin;
+}
+
+#current-wallet {
+    grid-row: 7;
+    grid-template-columns: 1;
+    align-self: center;
+    color:white;
+    background: black;
+    padding:20px;
+    border-radius: 10px;
+
 }
 
 #dealer-container {
