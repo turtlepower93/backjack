@@ -38,7 +38,6 @@ button:hover {
 
 .card{
     font-size:4vmin;
-    pointer-events: ;
 }
 
 #current-wallet {
@@ -73,6 +72,24 @@ button:hover {
     align-self: center;
     justify-items:center;
     text-align: center;
+    font-size: 3.5vmin;
+
+}
+
+#dealer-total {
+    grid-row: 2;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    align-self: center;
+    font-size: 25px;
+
+}
+
+#pot-total {
+    grid-row: 3;
+    grid-column: 2;
+    align-self: center;
+    justify-items: center;
 }
 
 h1 {
@@ -108,10 +125,11 @@ h1 {
 }
 
 .chips {
-    padding:50px;
+    padding:45px;
     background-color:rgb(232, 129, 88);
     border-radius: 50%;
     border: 15px dashed black;
+    margin: 0 5px;
 }
 
 #player-container {
@@ -126,16 +144,4 @@ h1 {
     
 }
 
-#dealer-total {
-    grid-row: 2;
-    grid-column-start: 1;
-    grid-column-end: 4;
-    align-self: center;
-}
 
-#pot-total {
-    grid-row: 3;
-    grid-column: 2;
-    align-self: center;
-    justify-items: center;
-}
