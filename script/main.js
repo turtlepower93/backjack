@@ -14,6 +14,8 @@ let currentDeck = []; //deck in use. once a card is removed, cant be picked agai
 let pot = []; //array of chips
 let wallet = 1000;
 let potTotal = 0;
+let onlyCountOnce = true;
+let poppedTotal;
 
 
 //CACHED ELEMENTS
@@ -64,15 +66,24 @@ function pullCard(currentHand,currentTotal,who) {
     let card = currentDeck[randomDraw];
     currentHand.push(card);
     currentDeck.splice(randomDraw,1);
+    if(onlyCountOnce && dealerHand.length === 2) {
+        onlyCountOnce = false;
+        console.log(currentHand)
+        render()
+        return;
+    }
     updateHandTotal(currentHand,currentTotal,who);
     render();
 }
 
 //adds up the value of hand, helper from pullcard
 function updateHandTotal(currentHand,currentTotal,who) {
+
+
     
+
     currentHand.forEach(function (ele) {
-    
+
         let num = ele.slice(1,3);
         
         if((num === 'K')||(num === 'Q')||(num === 'J')) {
@@ -86,17 +97,28 @@ function updateHandTotal(currentHand,currentTotal,who) {
                 num = 1;
             }
         }
-
         num = parseInt(num)
         currentTotal = num;
+        
     })
+
     
+
+    
+    
+
     if(who) {
         playerTotal += currentTotal;
     }  
-    if( 0 === who) {
+    if( 0 === who ) {
         dealerTotal += currentTotal;
+        dealerTotal += poppedTotal;
     }
+    if(dealerHand.length === 2) {
+        dealerTotal -= currentTotal;
+        poppedTotal = currentTotal;
+    }
+    
 
     console.log('playerTotal is' + playerTotal);
     console.log('dealerTotal is' + dealerTotal);
@@ -256,6 +278,7 @@ function refreshDeck() {
 
 function init() {
     pot = [];
+    poppedTotal = 0;
     potTotal = 0;
     playerHand = [];
     playerTotal = null;
