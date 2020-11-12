@@ -218,12 +218,17 @@ function renderCards() {
     playerHand.forEach(function(ele) {
         playerContainer.insertAdjacentHTML('afterbegin',`<div class="card ${ele}" align-content="flex-end"></div>`);
     })
-
+    
     dealerContainer.innerHTML = ` `;
     dealerHand.forEach(function(ele) {
         dealerContainer.insertAdjacentHTML('afterbegin',`<div class="card ${ele}" align-content="flex-end"></div>`);
     })
-        
+    // debugger
+    if(dealerHand.length === 2) {
+        dealerContainer.innerHTML = ` `;
+        dealerContainer.insertAdjacentHTML('afterbegin',`<div class="card back" align-content="flex-end"></div>`);
+        dealerContainer.insertAdjacentHTML('afterbegin',`<div class="card ${dealerHand[0]}" align-content="flex-end"></div>`);
+    }        
 }
 
 function render() {
