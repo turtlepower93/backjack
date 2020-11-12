@@ -106,6 +106,9 @@ function updateHandTotal(currentHand,currentTotal,who) {
 function handleBet(evt) {
 
     selectedChip = evt.target.id
+    if('chip-container' === selectedChip) {
+        return;
+    }
     selectedChip = selectedChip.slice(2,5);
     selectedChip = parseInt(selectedChip);
     if(wallet < selectedChip) return console.log('YOUBROKEFOOL');
