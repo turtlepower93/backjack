@@ -30,6 +30,7 @@ const dealerTotalEl = document.getElementById('dealer-total');
 const playerTotalEl = document.getElementById('player-total');
 const playerWalletEl = document.getElementById('current-wallet');
 const potTotalEl = document.getElementById('pot-total')
+const winDisplayEl = document.querySelector('p')
 
 
 //EVENT LISTENERS
@@ -43,10 +44,7 @@ dealBut.addEventListener('click', init);
 
 init();
 
-function gameLoop() {
-    dealHands();
-    render();
-}
+
 
 //Deal beginning hands
 function dealHands() {
@@ -56,8 +54,7 @@ function dealHands() {
     while(dealerHand.length <= 1) {
         pullCard(dealerHand,dealerTotal,0);
     }
-    console.log('player Hand: '+ playerHand);
-    console.log('dealerHand: '+ dealerHand);
+
 }
 
 //Pull random card from currentDeck and place it in hand.
@@ -72,20 +69,12 @@ function pullCard(currentHand,currentTotal,who) {
 
 //adds up the value of hand, helper from pullcard
 function updateHandTotal(currentHand,currentTotal,who) {
-
-
-    
-
     currentHand.forEach(function (ele) {
-
-        let num = ele.slice(1,3);
-        
+        let num = ele.slice(1,3);  
         if((num === 'K')||(num === 'Q')||(num === 'J')) {
             num = 10;
         }
-
         if(num === 'A') {
-            debugger
             if(currentTotal < 10) {
                 num = 11;
             } else {
@@ -93,19 +82,13 @@ function updateHandTotal(currentHand,currentTotal,who) {
             }
         }
         num = parseInt(num)
-        currentTotal = num;
-        
+        currentTotal = num;  
     })
 
-    
-
-    
-    
-
+    //Update Totals
     if(who) {
         playerTotal += currentTotal;
     }
-      
     if( 0 === who ) {
         dealerTotal += currentTotal;
         dealerTotal += poppedTotal;
@@ -116,28 +99,22 @@ function updateHandTotal(currentHand,currentTotal,who) {
         poppedTotal = currentTotal;
         onlyCountOnce = false;
     }
-    
-
-    console.log('playerTotal is' + playerTotal);
-    console.log('dealerTotal is' + dealerTotal);
-    console.log(currentHand);
 }
 
+//Bet handler
 function handleBet(evt) {
-
     selectedChip = evt.target.id
     if('chip-container' === selectedChip) {
         return;
     }
     selectedChip = selectedChip.slice(2,5);
     selectedChip = parseInt(selectedChip);
-    if(wallet < selectedChip) return console.log('YOUBROKEFOOL');
+    if(wallet < selectedChip) return;
     //move chip to pot icebox
     wallet -= selectedChip;
     pot.push(selectedChip);
     countPot();
     render();
-
 }
 
 function countPot() {
@@ -145,7 +122,21 @@ function countPot() {
     console.log(potTotal);
 }
 
-
+//Display you win, you lose, tie!
+function renderWinState(state) {
+    if(state === 0) {
+        winDisplayEl.textContent = 'You Lose!';
+    }
+    if(state === 1) {
+        winDisplayEl.textContent = "Winner Winner Chicken Dinner!";
+    }
+    if(state === -1) {
+        winDisplayEl.textContent = "";
+    }
+    if(state === 2) {
+        winDisplayEl.textContent = "tie!";
+    }
+}
 
 function handleHit() {
     pullCard(playerHand,playerTotal, 1);
@@ -164,40 +155,41 @@ function handleStay() {
 }
 
 function dealerPlays() {
-
     while(playerTotal >= dealerTotal) {
         if (dealerTotal >= 17) {
             break;
         }
         pullCard(dealerHand,dealerTotal, 0);
-        console.log(dealerHand);
-        console.log("dealer hits, new total is:" + dealerTotal)
     }
-    console.log(dealerTotal)
 }
 
+//Logic to determine who is the winner.
 function whoWon() {
-    
     if(playerTotal > 21) {
+        renderWinState(0);
     }
     
     if (dealerTotal > 21) {
+        renderWinState(1);
         wallet += (potTotal*2);
     }
 
     if((dealerTotal < 21 && playerTotal <= 21) && playerTotal > dealerTotal) {
+        renderWinState(1);
         wallet += (potTotal*2);
     }
     if((dealerTotal <= 21 && playerTotal < 21) && dealerTotal > playerTotal) {
+        renderWinState(0);
     } 
 
     if(playerTotal === 21 && dealerTotal === 21) {
-        console.log('Push')
+        renderWinState(2);
         wallet += potTotal;
     }
-    renderDealHandButton(1) 
+    renderDealHandButton(1);
     render();
 }
+
 
 function renderDealHandButton(state) {
     if(state === 0) {
@@ -212,6 +204,7 @@ function renderDealHandButton(state) {
     }
 }
 
+//Renders the values in the middle of screen.
 function renderValue() {
     dealerTotalEl.innerHTML = `<div id="dealer-total">${dealerTotal}</div>`;
     playerTotalEl.innerHTML = `<div id="player-total">${playerTotal}</div>`;
@@ -219,6 +212,7 @@ function renderValue() {
     playerWalletEl.innerHTML = `<div id="player-total">Wallet : $${wallet}</div>`;
 }
 
+//Stops the player from being able to bet during the game.
 function renderDisableBetting(state){
     if(state === 1) {
         chipButs.style.pointerEvents = 'all';
@@ -228,16 +222,8 @@ function renderDisableBetting(state){
     }
 }
 
-function renderMoveCards() {
-
-}
-
-function renderMoveChip() {
-
-}
-
+//RendersCards
 function renderCards() {
-
     playerContainer.innerHTML = ` `;
     playerHand.forEach(function(ele) {
         playerContainer.insertAdjacentHTML('afterbegin',`<div class="card ${ele}" align-content="flex-end"></div>`);
@@ -247,7 +233,7 @@ function renderCards() {
     dealerHand.forEach(function(ele) {
         dealerContainer.insertAdjacentHTML('afterbegin',`<div class="card ${ele}" align-content="flex-end"></div>`);
     })
-    // debugger
+
     if(dealerHand.length === 2) {
         dealerContainer.innerHTML = ` `;
         dealerContainer.insertAdjacentHTML('afterbegin',`<div class="card back" align-content="flex-end"></div>`);
@@ -255,6 +241,7 @@ function renderCards() {
     }        
 }
 
+//Updates the cards, potValue, player and dealer hand values
 function render() {
    renderCards();
    renderValue();
@@ -284,10 +271,12 @@ function init() {
     playerTotal = null;
     dealerHand = [];
     dealerTotal = null;
-    renderDealHandButton(0);
+    renderWinState(-1);
+    renderDealHandButton(1);
     renderDisableBetting(1)
     refreshDeck();
-    gameLoop();
+    dealHands();
+    render();
 }
 
 
