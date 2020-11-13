@@ -4,6 +4,7 @@ The goal of this game is to beat the dealer!
 
 (include screenshot)
 
+![BlackJack Screenshot](https://i.imgur.com/ttADlja.png)
 
 ## Technologies Used
 
