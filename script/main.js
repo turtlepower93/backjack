@@ -262,6 +262,8 @@ function refreshDeck() {
     }
 }
 
+
+
 function init() {
     pot = [];
     onlyCountOnce = true;
@@ -272,7 +274,7 @@ function init() {
     dealerHand = [];
     dealerTotal = null;
     renderWinState(-1);
-    renderDealHandButton(1);
+    renderDealHandButton(0);
     renderDisableBetting(1)
     refreshDeck();
     dealHands();
