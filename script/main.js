@@ -119,7 +119,6 @@ function handleBet(evt) {
 
 function countPot() {
     potTotal = pot.reduce((acc,ele) => acc + ele)
-    console.log(potTotal);
 }
 
 //Display you win, you lose, tie!
