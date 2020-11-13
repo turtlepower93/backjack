@@ -66,12 +66,6 @@ function pullCard(currentHand,currentTotal,who) {
     let card = currentDeck[randomDraw];
     currentHand.push(card);
     currentDeck.splice(randomDraw,1);
-    if(onlyCountOnce && dealerHand.length === 2) {
-        onlyCountOnce = false;
-        console.log(currentHand)
-        render()
-        return;
-    }
     updateHandTotal(currentHand,currentTotal,who);
     render();
 }
@@ -91,7 +85,8 @@ function updateHandTotal(currentHand,currentTotal,who) {
         }
 
         if(num === 'A') {
-            if(playerTotal < 10) {
+            debugger
+            if(currentTotal < 10) {
                 num = 11;
             } else {
                 num = 1;
@@ -109,14 +104,17 @@ function updateHandTotal(currentHand,currentTotal,who) {
 
     if(who) {
         playerTotal += currentTotal;
-    }  
+    }
+      
     if( 0 === who ) {
         dealerTotal += currentTotal;
         dealerTotal += poppedTotal;
+        poppedTotal = 0;
     }
-    if(dealerHand.length === 2) {
+    if(dealerHand.length === 2 && onlyCountOnce) {
         dealerTotal -= currentTotal;
         poppedTotal = currentTotal;
+        onlyCountOnce = false;
     }
     
 
@@ -179,22 +177,23 @@ function dealerPlays() {
 }
 
 function whoWon() {
-    //if player over 21, bust!
+    
     if(playerTotal > 21) {
     }
-    //dealer bust
+    
     if (dealerTotal > 21) {
         wallet += (potTotal*2);
     }
 
-    if((dealerTotal < 21 && playerTotal < 21) && playerTotal > dealerTotal) {
+    if((dealerTotal < 21 && playerTotal <= 21) && playerTotal > dealerTotal) {
         wallet += (potTotal*2);
     }
-    if((dealerTotal < 21 && playerTotal < 21) && dealerTotal > playerTotal) {
+    if((dealerTotal <= 21 && playerTotal < 21) && dealerTotal > playerTotal) {
     } 
 
-    if(playerTotal === 21 && dealerTotal ===21) {
+    if(playerTotal === 21 && dealerTotal === 21) {
         console.log('Push')
+        wallet += potTotal;
     }
     renderDealHandButton(1) 
     render();
@@ -278,6 +277,7 @@ function refreshDeck() {
 
 function init() {
     pot = [];
+    onlyCountOnce = true;
     poppedTotal = 0;
     potTotal = 0;
     playerHand = [];
